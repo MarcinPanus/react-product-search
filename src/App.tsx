@@ -1,44 +1,54 @@
 import { useState } from "react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-
-import { fetchProductsSearch } from "./api/products";
-import { useDebounce } from "./hooks/useDebounce";
 import { Link } from "react-router";
+import { useProducts } from "./hooks/useProducts";
+import { useDebounce } from "./hooks/useDebounce";
 
 const PRODUCTS_PER_PAGE = 10;
 
 function App() {
   const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
   const debouncedSearch = useDebounce(search, 500);
 
-  const { data, isFetching, isLoading, error } = useQuery({
-    queryKey: ["products", debouncedSearch, page],
-
-    queryFn: ({ queryKey }) => {
-      const searchTerm = queryKey[1] as string;
-      const page = queryKey[2] as number;
-
-      return fetchProductsSearch(searchTerm, page);
-    },
-
-    placeholderData: keepPreviousData,
-    enabled: debouncedSearch.length > 0,
-    staleTime: 5000,
-    gcTime: 10000,
-  });
+  const { data, isFetching, isLoading, error } = useProducts(debouncedSearch, category, page);
 
   const totalPages = data ? Math.ceil(data.total / PRODUCTS_PER_PAGE) : 0;
 
   return (
     <main>
-      <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search for the products..." />
+      <input
+        value={search}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setPage(1);
+        }}
+        placeholder="Search for the products..."
+      />
+
+      <select
+        value={category}
+        onChange={(e) => {
+          setCategory(e.target.value);
+          setPage(1);
+        }}
+      >
+        <option value="">All categories</option>
+        <option value="smartphones">Smartphones</option>
+        <option value="laptops">Laptops</option>
+        <option value="fragrances">Fragrances</option>
+        <option value="groceries">Groceries</option>
+      </select>
+
       <h1>Products:</h1>
 
       {!debouncedSearch && <p>Start typing to search for products.</p>}
+
       {isLoading && <p>Loading...</p>}
+
       {isFetching && !isLoading && <p>Updating...</p>}
+
       {error && <p>Error: {error.message}</p>}
 
       {data && (
@@ -52,8 +62,9 @@ function App() {
               </li>
             ))}
           </ul>
+
           <div>
-            <button disabled={page <= 1} onClick={() => setPage(page - 1)}>
+            <button disabled={page <= 1} onClick={() => setPage((prev) => prev - 1)}>
               Previous
             </button>
 
@@ -61,7 +72,7 @@ function App() {
               Page {page} of {totalPages}
             </span>
 
-            <button disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
+            <button disabled={page >= totalPages} onClick={() => setPage((prev) => prev + 1)}>
               Next
             </button>
           </div>
