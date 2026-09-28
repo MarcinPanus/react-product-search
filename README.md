@@ -1,75 +1,49 @@
-# React + TypeScript + Vite
+# Product Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple product search application built with React and TypeScript.  
+The project focuses on working with server state, caching, pagination, search, and mutations using TanStack Query.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Product listing
+- Product search with debounce
+- Category filtering
+- Pagination
+- Product details page
+- Updating product price
+- Client-side cache management with TanStack Query
+- Loading and error states
+- Responsive UI
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React** – building the user interface
+- **TypeScript** – static typing
+- **Vite** – development environment and build tool
+- **TanStack Query** – server state management, caching, queries and mutations
+- **React Router** – client-side routing
+- **Tailwind CSS** – styling and responsive layout
+- **DummyJSON** – REST API for product data
 
-## Expanding the ESLint configuration
+## What I Practiced
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This project was built to practice modern React patterns, especially:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- server state vs. client state
+- query keys and caching
+- `staleTime` and `gcTime`
+- loading and fetching states
+- debounced search
+- pagination
+- query invalidation and cache updates
+- mutations with `useMutation`
+- custom React hooks
+- TypeScript with React Query
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Getting Started
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Install dependencies:
 
-```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
